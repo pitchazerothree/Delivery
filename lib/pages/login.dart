@@ -70,14 +70,14 @@ class LoginPage extends StatelessWidget {
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: const BorderSide(
-                                    color: Colors.pinkAccent,
+                                    color: Color.fromRGBO(255, 198, 207, 1),
                                     width: 2,
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: const BorderSide(
-                                    color: Colors.pink,
+                                    color: Color.fromRGBO(255, 198, 207, 1),
                                     width: 2,
                                   ),
                                 ),
@@ -105,14 +105,14 @@ class LoginPage extends StatelessWidget {
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: const BorderSide(
-                                    color: Colors.pinkAccent,
+                                    color: Color.fromRGBO(255, 198, 207, 1),
                                     width: 2,
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: const BorderSide(
-                                    color: Colors.pink,
+                                    color: Color.fromRGBO(255, 198, 207, 1),
                                     width: 2,
                                   ),
                                 ),
