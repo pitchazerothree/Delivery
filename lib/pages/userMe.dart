@@ -14,18 +14,18 @@ class userMePage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          SizedBox(height: 40),
-          CircleAvatar(
+          const SizedBox(height: 40),
+          const CircleAvatar(
             radius: 60,
-            backgroundImage: AssetImage(
-                'assets/profile.png'), // Replace with the correct image path
+            backgroundImage:
+                AssetImage('assets/images/ส่ง.png'), //ตรงนี้ใส่รูปผู้ใช้เด้อ
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Card(
             color: Colors.pink[100],
-            margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
+            margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            child: const Padding(
+              padding: EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -47,7 +47,7 @@ class userMePage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           ElevatedButton(
             onPressed: () {
               // เมื่อกดปุ่มออกจากระบบ จะนำไปยังหน้า LoginPage
@@ -59,22 +59,22 @@ class userMePage extends StatelessWidget {
               );
             },
             style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
               backgroundColor: Colors.pink[200], // Background color
             ),
-            child: Text('ออกจากระบบ',
+            child: const Text('ออกจากระบบ',
                 style: TextStyle(fontSize: 16, color: Colors.black)),
           ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าหลัก'),
           BottomNavigationBarItem(
               icon: Icon(Icons.person),
               label: 'ฉัน'), // เปลี่ยนจาก Icons.book เป็น Icons.person
         ],
-        backgroundColor: Color(0xFFFEACC3),
+        backgroundColor: const Color(0xFFFEACC3),
         selectedItemColor: Colors.black,
         onTap: (index) {
           if (index == 0) {

@@ -6,15 +6,16 @@ class UserPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        //ปิดไม่ให้ย้อนกลับ
         automaticallyImplyLeading: false,
         title: Container(
           alignment: Alignment.center,
-          child: Text(
+          child: const Text(
             'หน้าหลัก',
             style: TextStyle(color: Colors.black), // ปรับสีข้อความตามต้องการ
           ),
         ),
-        backgroundColor: Color(0xFFFEACC3),
+        backgroundColor: const Color(0xFFFEACC3),
       ),
       body: Center(
         child: Column(
@@ -23,15 +24,15 @@ class UserPage extends StatelessWidget {
             OptionButton(
               title: 'ผู้ส่งสินค้า',
               image: 'assets/images/ส่ง.png', // เส้นทางของรูปภาพ
-              color: Color(0xFFFEACC3),
+              color: const Color(0xFFFEACC3),
               width: 200.0,
               height: 200.0,
             ),
-            SizedBox(height: 20), // ระยะห่างระหว่างปุ่ม
+            const SizedBox(height: 20), // ระยะห่างระหว่างปุ่ม
             OptionButton(
               title: 'ผู้รับสินค้า',
               image: 'assets/images/รับ.png', // เส้นทางของรูปภาพ
-              color: Color(0xFFFEACC3),
+              color: const Color(0xFFFEACC3),
               width: 200.0,
               height: 200.0,
             ),
@@ -39,13 +40,13 @@ class UserPage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าหลัก'),
           BottomNavigationBarItem(
               icon: Icon(Icons.person),
               label: 'ฉัน'), // เปลี่ยนจาก Icons.book เป็น Icons.person
         ],
-        backgroundColor: Color(0xFFFEACC3),
+        backgroundColor: const Color(0xFFFEACC3),
         selectedItemColor: Colors.black,
         onTap: (index) {
           if (index == 0) {
@@ -88,7 +89,7 @@ class OptionButton extends StatelessWidget {
       width: width,
       height: height,
       child: Card(
-        margin: EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
         color: color,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -98,10 +99,10 @@ class OptionButton extends StatelessWidget {
               height: 100, // กำหนดความสูงของภาพ
               fit: BoxFit.cover, // ให้ภาพพอดีกับ Container
             ),
-            SizedBox(height: 8), // ระยะห่างระหว่างภาพและชื่อ
+            const SizedBox(height: 8), // ระยะห่างระหว่างภาพและชื่อ
             Text(
               title,
-              style: TextStyle(fontSize: 20), // ปรับขนาดฟอนต์ตามต้องการ
+              style: const TextStyle(fontSize: 20), // ปรับขนาดฟอนต์ตามต้องการ
             ),
           ],
         ),
