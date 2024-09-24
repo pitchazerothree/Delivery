@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_delivery/pages/registerrider.dart';
 import 'package:flutter_delivery/pages/registeruser.dart';
+import 'package:flutter_delivery/pages/user.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -127,15 +128,17 @@ class LoginPage extends StatelessWidget {
                             // ปุ่มเข้าสู่ระบบ
                             ElevatedButton(
                               onPressed: () {
-                                // โค้ดเมื่อกดปุ่มเข้าสู่ระบบ
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => UserPage()),
+                                );
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
                                     const Color.fromRGBO(255, 198, 207, 1),
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 50,
-                                  vertical: 15,
-                                ),
+                                    horizontal: 50, vertical: 15),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30),
                                 ),
@@ -144,7 +147,7 @@ class LoginPage extends StatelessWidget {
                                 'เข้าสู่ระบบ',
                                 style: TextStyle(
                                   fontSize: 18,
-                                  fontWeight: FontWeight.bold, // ทำให้ตัวหนา
+                                  fontWeight: FontWeight.bold,
                                   color: Colors.black,
                                 ),
                               ),
