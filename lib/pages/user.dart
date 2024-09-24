@@ -5,17 +5,36 @@ class UserPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('หน้าหลัก'),
-        backgroundColor: Colors.pink,
+        title: Container(
+          alignment: Alignment.center,
+          child: Text(
+            'หน้าหลัก',
+            style: TextStyle(color: Colors.black), // ปรับสีข้อความตามต้องการ
+          ),
+        ),
+        backgroundColor: Color(0xFFFEACC3),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          OptionButton(
-              title: 'ผู้ส่งสินค้า', icon: Icons.send, color: Colors.amber),
-          OptionButton(
-              title: 'ผู้รับสินค้า', icon: Icons.receipt, color: Colors.green),
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            OptionButton(
+              title: 'ผู้ส่งสินค้า',
+              image: 'assets/images/ส่ง.png', // เส้นทางของรูปภาพ
+              color: Color(0xFFFEACC3),
+              width: 200.0,
+              height: 200.0,
+            ),
+            SizedBox(height: 20), // ระยะห่างระหว่างปุ่ม
+            OptionButton(
+              title: 'ผู้รับสินค้า',
+              image: 'assets/images/รับ.png', // เส้นทางของรูปภาพ
+              color: Color(0xFFFEACC3),
+              width: 200.0,
+              height: 200.0,
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
@@ -31,22 +50,42 @@ class UserPage extends StatelessWidget {
 
 class OptionButton extends StatelessWidget {
   final String title;
-  final IconData icon;
+  final String image; // เปลี่ยนเป็น String สำหรับเส้นทางของภาพ
   final Color color;
+  final double width;
+  final double height;
 
-  OptionButton({required this.title, required this.icon, required this.color});
+  OptionButton({
+    required this.title,
+    required this.image,
+    required this.color,
+    this.width = 100.0,
+    this.height = 100.0,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(10),
-      color: color,
-      child: ListTile(
-        leading: Icon(icon, size: 50),
-        title: Text(title),
-        onTap: () {
-          // เพิ่มการดำเนินการเมื่อผู้ใช้คลิก
-        },
+    return Container(
+      width: width,
+      height: height,
+      child: Card(
+        margin: EdgeInsets.all(10),
+        color: color,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              image,
+              height: 100, // กำหนดความสูงของภาพ
+              fit: BoxFit.cover, // ให้ภาพพอดีกับ Container
+            ),
+            SizedBox(height: 8), // ระยะห่างระหว่างภาพและชื่อ
+            Text(
+              title,
+              style: TextStyle(fontSize: 20), // ปรับขนาดฟอนต์ตามต้องการ
+            ),
+          ],
+        ),
       ),
     );
   }
