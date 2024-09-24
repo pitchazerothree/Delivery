@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_delivery/pages/registerrider.dart';
 import 'package:flutter_delivery/pages/registeruser.dart';
 
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -31,7 +30,7 @@ class LoginPage extends StatelessWidget {
                   bottom: Radius.circular(10)), // กำหนดขนาดของขอบโค้ง
               child: Image.asset(
                 'assets/images/logo.png',
-                height: 405,
+                height: 250,
                 fit: BoxFit.cover,
               ),
             ),
@@ -39,7 +38,7 @@ class LoginPage extends StatelessWidget {
           Center(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.only(top: 380),
+                padding: const EdgeInsets.only(top: 200),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
