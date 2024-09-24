@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_delivery/pages/registerrider.dart';
+import 'package:flutter_delivery/pages/registeruser.dart';
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -160,14 +163,22 @@ class LoginPage extends StatelessWidget {
                       children: [
                         TextButton(
                           onPressed: () {
-                            // โค้ดเมื่อกดสมัคร rider
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RegisterRider()),
+                            );
                           },
                           child: const Text('สมัครสมาชิก (rider)'),
                         ),
                         const SizedBox(width: 20),
                         TextButton(
                           onPressed: () {
-                            // โค้ดเมื่อกดสมัคร user
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RegisterUser()),
+                            );
                           },
                           child: const Text('สมัครสมาชิก (User)'),
                         ),

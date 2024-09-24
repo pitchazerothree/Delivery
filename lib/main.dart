@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_delivery/pages/login.dart';
+import 'package:flutter_delivery/pages/registerrider.dart';
+import 'package:flutter_delivery/pages/registeruser.dart';
 
 void main() {
   runApp(const MyApp());
