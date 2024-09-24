@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_delivery/pages/userMe.dart';
 
 class UserPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Container(
           alignment: Alignment.center,
           child: Text(
@@ -39,10 +41,27 @@ class UserPage extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าหลัก'),
-          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'ฉัน'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'ฉัน'), // เปลี่ยนจาก Icons.book เป็น Icons.person
         ],
         backgroundColor: Color(0xFFFEACC3),
-        selectedItemColor: Colors.white,
+        selectedItemColor: Colors.black,
+        onTap: (index) {
+          if (index == 0) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => UserPage()), // ไปที่หน้า UserPage
+            );
+          } else {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => userMePage()), // ไปที่หน้า UserMePage
+            );
+          }
+        },
       ),
     );
   }
