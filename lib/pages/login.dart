@@ -31,7 +31,7 @@ class LoginPage extends StatelessWidget {
                   bottom: Radius.circular(10)), // กำหนดขนาดของขอบโค้ง
               child: Image.asset(
                 'assets/images/logo.png',
-                height: 250,
+                height:     285,
                 fit: BoxFit.cover,
               ),
             ),
