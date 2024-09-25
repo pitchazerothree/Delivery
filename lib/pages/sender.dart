@@ -1,16 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_delivery/pages/statusRider.dart'; // Import your StatusPage
 
-class ReceiverPage extends StatelessWidget {
+class SenderPage extends StatelessWidget {
   final List<Order> orders = [
     Order(
-      id: 20,
-      name: 'ตะวันชา ฟ้าใส',
-      phoneNumber: '0222222222',
-      address: '55/555 ต.รธ อ.นนน จ.ออออ',
+      id: 55,
+      name: 'นริสา ดูดี',
+      phoneNumber: '0245879532',
+      address: '18/54 ต.บางบัวทอง อ.พนม จ.ฉะเชิงเทรา 23519',
       items: [
         OrderItem(
-          name: 'อโกโก้ได้บัน',
+          name: 'พัดลม',
+          imageUrl: 'assets/images/fan.png',
+        ),
+      ],
+    ),
+    Order(
+      id: 50,
+      name: 'วันาน ถึง',
+      phoneNumber: '0245896125',
+      address: '55/555 ต.ธร อ.กร จ.จอพพพอง',
+      items: [
+        OrderItem(
+          name: 'อโวคาโด้ปั่น',
           imageUrl: 'assets/images/logo.png',
         ),
         OrderItem(
@@ -19,50 +31,32 @@ class ReceiverPage extends StatelessWidget {
         ),
       ],
     ),
-    Order(
-      id: 21,
-      name: 'นางสา กรกฎ',
-      phoneNumber: '02222255522',
-      address: '9/57/2557',
-      items: [
-        OrderItem(
-          name: 'ข้าวผัดกะเพรา',
-          imageUrl: 'assets/images/logo.png',
-        ),
-        OrderItem(
-          name: 'ชานมไข่มุก',
-          imageUrl: 'assets/images/logo.png',
-        ),
-      ],
-    ),
   ];
 
- @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Text('สินค้าที่ต้องจัดส่งทั้งหมด'),
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: Colors.black),
-        onPressed: () => Navigator.of(context).pop(),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        toolbarHeight: 10, // กำหนดความสูงของ AppBar
       ),
-    ),
-    body: SingleChildScrollView( // ใช้ SingleChildScrollView เพื่อให้สามารถเลื่อนขึ้นลงได้
-      child: Column(
-        children: [
-          SizedBox(height: 18), // เพิ่มระยะห่างระหว่างแอปบาร์และการ์ด
-          ListView.builder( 
-            itemCount: orders.length,
-            shrinkWrap: true, // ใช้เพื่อให้ ListView ไม่ใช้พื้นที่ทั้งหมด
-            physics: NeverScrollableScrollPhysics(), // ปิดการเลื่อนของ ListView
-            itemBuilder: (context, index) {
-              final order = orders[index];
-              return Container(
-                width: 300, // กำหนดความกว้างของการ์ดที่ต้องการ
-                margin: EdgeInsets.symmetric(
-                    horizontal: 25, vertical: 10), // เพิ่ม margin ด้านบนและด้านล่าง
-                child: Card(
-                  color: Color.fromRGBO(254, 172, 195, 1),
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: 18),
+            ListView.builder(
+              itemCount: orders.length,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                final order = orders[index];
+                return Container(
+                  margin: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(254, 172, 195, 1),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -70,7 +64,7 @@ Widget build(BuildContext context) {
                       children: [
                         Center(
                           child: Text(
-                            'ออเดอร์ที่ ${order.id}\nผู้ส่ง: ${order.name}',
+                            'ออเดอร์ที่ ${order.id}\nผู้รับ : ${order.name}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
@@ -78,13 +72,16 @@ Widget build(BuildContext context) {
                             textAlign: TextAlign.center,
                           ),
                         ),
+                        SizedBox(height: 10),
                         Text('เบอร์โทร : ${order.phoneNumber}'),
                         Text('ที่อยู่ : ${order.address}'),
                         SizedBox(height: 8),
                         Divider(color: Colors.black),
                         SizedBox(height: 8),
-                        Text('รายการของที่สั่ง:',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text(
+                          'รายการของที่สั่ง:',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                         SizedBox(height: 8),
                         ListView.builder(
                           shrinkWrap: true,
@@ -115,8 +112,7 @@ Widget build(BuildContext context) {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 30, vertical: 10),
+                              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                             ),
                             child: Text('ดูสถานะการจัดส่ง'),
                           ),
@@ -124,16 +120,29 @@ Widget build(BuildContext context) {
                       ],
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color.fromRGBO(254, 172, 195, 1),
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.white,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'หน้าหลัก',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_shipping),
+            label: 'สินค้าที่ส่ง',
           ),
         ],
       ),
-    ),
-  );
-}
-
+    );
+  }
 }
 
 // Order class

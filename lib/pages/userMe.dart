@@ -9,8 +9,7 @@ class userMePage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        // title: Text('Profile'),
-        // backgroundColor: Colors.pink[200],
+        backgroundColor: Colors.white,
       ),
       body: Column(
         children: [
@@ -60,7 +59,7 @@ class userMePage extends StatelessWidget {
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-              backgroundColor: Colors.pink[200], // Background color
+              backgroundColor: Color.fromRGBO(255, 198, 207, 1), // Background color
             ),
             child: const Text('ออกจากระบบ',
                 style: TextStyle(fontSize: 16, color: Colors.black)),
@@ -74,7 +73,7 @@ class userMePage extends StatelessWidget {
               icon: Icon(Icons.person),
               label: 'ฉัน'), // เปลี่ยนจาก Icons.book เป็น Icons.person
         ],
-        backgroundColor: const Color(0xFFFEACC3),
+        backgroundColor: Color.fromRGBO(254, 172, 195, 1),
         selectedItemColor: Colors.black,
         onTap: (index) {
           if (index == 0) {

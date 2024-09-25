@@ -16,7 +16,7 @@ class UserPage extends StatelessWidget {
             style: TextStyle(color: Colors.black), // ปรับสีข้อความตามต้องการ
           ),
         ),
-        backgroundColor: const Color(0xFFFEACC3),
+        backgroundColor: Color.fromRGBO(254, 172, 195, 1),
       ),
       body: Center(
         child: Column(
@@ -25,7 +25,7 @@ class UserPage extends StatelessWidget {
             OptionButton(
               title: 'ผู้ส่งสินค้า',
               image: 'assets/images/ส่ง.png',
-              color: const Color(0xFFFEACC3),
+              color: Color.fromRGBO(254, 172, 195, 1),
               width: 200.0,
               height: 200.0,
               onPressed: () {
@@ -41,7 +41,7 @@ class UserPage extends StatelessWidget {
             OptionButton(
               title: 'ผู้รับสินค้า',
               image: 'assets/images/รับ.png',
-              color: const Color(0xFFFEACC3),
+              color: Color.fromRGBO(254, 172, 195, 1),
               width: 200.0,
               height: 200.0,
               onPressed: () {
@@ -63,7 +63,7 @@ class UserPage extends StatelessWidget {
               icon: Icon(Icons.person),
               label: 'ฉัน'), // เปลี่ยนจาก Icons.book เป็น Icons.person
         ],
-        backgroundColor: const Color(0xFFFEACC3),
+        backgroundColor: Color.fromRGBO(254, 172, 195, 1),
         selectedItemColor: Colors.black,
         onTap: (index) {
           if (index == 0) {

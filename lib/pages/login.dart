@@ -3,23 +3,11 @@ import 'package:flutter_delivery/pages/registerrider.dart';
 import 'package:flutter_delivery/pages/registeruser.dart';
 import 'package:flutter_delivery/pages/user.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LoginPage(),
-    );
-  }
-}
-
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.pink[50],
+      backgroundColor: Color.fromRGBO(254, 172, 195, 1),
       body: Stack(
         children: [
           Positioned(

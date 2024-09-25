@@ -14,9 +14,9 @@ class _RegisterRiderState extends State<RegisterRider> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(255, 198, 207, 1),
+      backgroundColor: Color.fromRGBO(254, 172, 195, 1),
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(255, 198, 207, 1),
+        backgroundColor: Color.fromRGBO(254, 172, 195, 1),
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
@@ -48,7 +48,7 @@ class _RegisterRiderState extends State<RegisterRider> {
                   backgroundColor: Colors.white,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(3),
                   ),
                 ),
                 child: Text(
@@ -70,7 +70,7 @@ class _RegisterRiderState extends State<RegisterRider> {
                   padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                   backgroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
                 child: Text(

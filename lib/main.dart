@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_delivery/pages/homerider.dart';
 import 'package:flutter_delivery/pages/login.dart';
+import 'package:flutter_delivery/pages/orderreceive.dart';
+import 'package:flutter_delivery/pages/ordersender.dart';
+import 'package:flutter_delivery/pages/receiver.dart';
 import 'package:flutter_delivery/pages/registerrider.dart';
 import 'package:flutter_delivery/pages/registeruser.dart';
+import 'package:flutter_delivery/pages/sender.dart';
 import 'package:flutter_delivery/pages/user.dart';
 import 'package:flutter_delivery/pages/userMe.dart';
 
@@ -18,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: HomeRiderPage(),
+      home: UserPage(),
     );
   }
 }
