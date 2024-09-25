@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_delivery/pages/login.dart';
 
-
 class HomeRiderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,7 @@ class HomeRiderPage extends StatelessWidget {
                   children: [
                     const SizedBox(width: 20), // เพิ่มระยะห่างจากขอบซ้าย
                     CircleAvatar(
-                      backgroundImage: AssetImage('assets/images/rider_profile.png'),
+                      backgroundImage: AssetImage('assets/images/logo.png'),
                       radius: 35, // ปรับขนาดรูปโปรไฟล์ให้เล็กลง
                     ),
                     const SizedBox(width: 20), // ระยะห่างระหว่างรูปกับข้อความ
@@ -29,15 +28,15 @@ class HomeRiderPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
                           Text(
-                            'ชื่อไรเดอร์ : ตะวันชา ฟ้าใส', 
+                            'ชื่อไรเดอร์ : ตะวันชา ฟ้าใส',
                             style: TextStyle(color: Colors.black, fontSize: 16),
                           ),
                           Text(
-                            'เบอร์โทร : xxxxxxxxxx', 
+                            'เบอร์โทร : xxxxxxxxxx',
                             style: TextStyle(color: Colors.black, fontSize: 14),
                           ),
                           Text(
-                            'ทะเบียนรถ: xxxxxx', 
+                            'ทะเบียนรถ: xxxxxx',
                             style: TextStyle(color: Colors.black, fontSize: 14),
                           ),
                         ],
@@ -47,7 +46,9 @@ class HomeRiderPage extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => LoginPage()), // ต้องมีวงเล็บ () ที่ LoginPage
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  LoginPage()), // ต้องมีวงเล็บ () ที่ LoginPage
                         );
                       },
                       icon: Icon(Icons.logout),
@@ -85,7 +86,8 @@ class HomeRiderPage extends StatelessWidget {
                   Center(
                     child: const Text(
                       'ออเดอร์ที่ 50',
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -108,7 +110,7 @@ class HomeRiderPage extends StatelessWidget {
                   const SizedBox(height: 5),
                   const Text('เบอร์โทร: 0245896125'),
                   const Text('ที่อยู่ : 55/555 ต.ตรง อ.ทกท จ.จงพพพ'),
-                  const Divider(height: 20, thickness: 1, color: Colors.black), 
+                  const Divider(height: 20, thickness: 1, color: Colors.black),
                   const Text(
                     'รายการของที่สั่ง',
                     style: TextStyle(fontSize: 18),
@@ -119,11 +121,12 @@ class HomeRiderPage extends StatelessWidget {
                     physics: NeverScrollableScrollPhysics(),
                     children: [
                       ListTile(
-                        leading: Image.asset('assets/images/product1.png'), // รูปสินค้า
+                        leading:
+                            Image.asset('assets/images/logo.png'), // รูปสินค้า
                         title: Text('ชาเขียวใบ'),
                       ),
                       ListTile(
-                        leading: Image.asset('assets/images/product2.png'),
+                        leading: Image.asset('assets/images/logo.png'),
                         title: Text('ข้าวไข่เจียว+ผัดผง'),
                       ),
                     ],
@@ -135,7 +138,8 @@ class HomeRiderPage extends StatelessWidget {
                       const SizedBox(width: 30), // ขยับระยะห่าง
                       Container(
                         decoration: BoxDecoration(
-                          color: Color.fromRGBO(240, 49, 103, 1), // เปลี่ยนสีพื้นหลัง
+                          color: Color.fromRGBO(
+                              240, 49, 103, 1), // เปลี่ยนสีพื้นหลัง
                           borderRadius: BorderRadius.circular(8), // มุมโค้ง
                         ),
                         child: TextButton(
@@ -144,14 +148,17 @@ class HomeRiderPage extends StatelessWidget {
                           },
                           child: const Text(
                             'คลิกเพื่อดูตำแหน่ง',
-                            style: TextStyle(color: Colors.white), 
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 10),
-                  const Divider(height: 20, thickness: 1, color: Colors.black), // เส้นบรรทัดด้านล่างของรายการที่ส่ง
+                  const Divider(
+                      height: 20,
+                      thickness: 1,
+                      color: Colors.black), // เส้นบรรทัดด้านล่างของรายการที่ส่ง
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -161,18 +168,24 @@ class HomeRiderPage extends StatelessWidget {
                           // โค้ดยกเลิกออเดอร์
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromRGBO(254, 116, 116, 1), // สีพื้นหลัง
+                          backgroundColor:
+                              Color.fromRGBO(254, 116, 116, 1), // สีพื้นหลัง
                         ),
-                        child: const Text('ยกเลิกออเดอร์', style: TextStyle(color: Colors.white)), // เปลี่ยนสีตัวหนังสือ
+                        child: const Text('ยกเลิกออเดอร์',
+                            style: TextStyle(
+                                color: Colors.white)), // เปลี่ยนสีตัวหนังสือ
                       ),
                       ElevatedButton(
                         onPressed: () {
                           // โค้ดยืนยันรับออเดอร์
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromRGBO(255, 174, 0, 1), // สีพื้นหลัง
+                          backgroundColor:
+                              Color.fromRGBO(255, 174, 0, 1), // สีพื้นหลัง
                         ),
-                        child: const Text('ยืนยันรับออเดอร์', style: TextStyle(color: Colors.white)), // เปลี่ยนสีตัวหนังสือ
+                        child: const Text('ยืนยันรับออเดอร์',
+                            style: TextStyle(
+                                color: Colors.white)), // เปลี่ยนสีตัวหนังสือ
                       ),
                     ],
                   ),

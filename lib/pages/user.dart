@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_delivery/pages/receiver.dart';
 import 'package:flutter_delivery/pages/userMe.dart';
 
 class UserPage extends StatelessWidget {
@@ -23,18 +24,34 @@ class UserPage extends StatelessWidget {
           children: <Widget>[
             OptionButton(
               title: 'ผู้ส่งสินค้า',
-              image: 'assets/images/ส่ง.png', // เส้นทางของรูปภาพ
+              image: 'assets/images/ส่ง.png',
               color: const Color(0xFFFEACC3),
               width: 200.0,
               height: 200.0,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ReceiverPage()), // Adjust the page to navigate to
+                );
+              },
             ),
-            const SizedBox(height: 20), // ระยะห่างระหว่างปุ่ม
+            const SizedBox(height: 20),
             OptionButton(
               title: 'ผู้รับสินค้า',
-              image: 'assets/images/รับ.png', // เส้นทางของรูปภาพ
+              image: 'assets/images/รับ.png',
               color: const Color(0xFFFEACC3),
               width: 200.0,
               height: 200.0,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ReceiverPage()), // Adjust the page to navigate to
+                );
+              },
             ),
           ],
         ),
@@ -70,10 +87,11 @@ class UserPage extends StatelessWidget {
 
 class OptionButton extends StatelessWidget {
   final String title;
-  final String image; // เปลี่ยนเป็น String สำหรับเส้นทางของภาพ
+  final String image;
   final Color color;
   final double width;
   final double height;
+  final VoidCallback onPressed; // Callback function for tap event
 
   OptionButton({
     required this.title,
@@ -81,30 +99,34 @@ class OptionButton extends StatelessWidget {
     required this.color,
     this.width = 100.0,
     this.height = 100.0,
+    required this.onPressed, // Require onPressed parameter
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      child: Card(
-        margin: const EdgeInsets.all(10),
-        color: color,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              image,
-              height: 100, // กำหนดความสูงของภาพ
-              fit: BoxFit.cover, // ให้ภาพพอดีกับ Container
-            ),
-            const SizedBox(height: 8), // ระยะห่างระหว่างภาพและชื่อ
-            Text(
-              title,
-              style: const TextStyle(fontSize: 20), // ปรับขนาดฟอนต์ตามต้องการ
-            ),
-          ],
+    return InkWell(
+      onTap: onPressed, // Use the onPressed callback here
+      child: Container(
+        width: width,
+        height: height,
+        child: Card(
+          margin: const EdgeInsets.all(10),
+          color: color,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                image,
+                height: 100,
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                title,
+                style: const TextStyle(fontSize: 20),
+              ),
+            ],
+          ),
         ),
       ),
     );
