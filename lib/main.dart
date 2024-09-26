@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_delivery/pages/SendProduct.dart';
 import 'package:flutter_delivery/pages/homerider.dart';
 import 'package:flutter_delivery/pages/login.dart';
 import 'package:flutter_delivery/pages/orderreceive.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: UserPage(),
+      home: SenderProductPage(),
     );
   }
 }

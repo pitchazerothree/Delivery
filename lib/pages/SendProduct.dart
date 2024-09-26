@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_delivery/pages/homerider.dart';
+import 'package:flutter_delivery/pages/sender.dart';
 import 'package:flutter_delivery/pages/statusRider.dart'; // Import your StatusPage
 
-class SenderProductPage extends StatelessWidget {
+class SenderProductPage extends StatefulWidget {
+  @override
+  _SenderProductPageState createState() => _SenderProductPageState();
+}
+
+class _SenderProductPageState extends State<SenderProductPage> {
+  int _selectedIndex = 0; // To track the currently selected index
+
+  // Sample order data
   final List<Order> orders = [
     Order(
       id: 55,
@@ -34,12 +43,33 @@ class SenderProductPage extends StatelessWidget {
     ),
   ];
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index; // Update the selected index
+    });
+
+    // Navigate to the appropriate page based on the selected index
+    if (index == 0) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => SenderPage()), // Navigate to SenderPage
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => SenderProductPage()), // Current Page
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        toolbarHeight: 10, // กำหนดความสูงของ AppBar
+        toolbarHeight: 10, // Set AppBar height
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -129,19 +159,15 @@ class SenderProductPage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'ค้นหาสมาชิก'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.send), label: 'สินค้าที่ต้องส่ง'),
+        ],
+        currentIndex: _selectedIndex, // Highlight the current index
         backgroundColor: Color.fromRGBO(254, 172, 195, 1),
         selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.white,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'หน้าหลัก',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.local_shipping),
-            label: 'สินค้าที่ส่ง',
-          ),
-        ],
+        onTap: _onItemTapped, // Handle tap events
       ),
     );
   }
