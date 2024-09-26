@@ -65,8 +65,7 @@ class HomeRiderPage extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => LoginPage()),
+                          MaterialPageRoute(builder: (context) => LoginPage()),
                         );
                       },
                       icon: Icon(Icons.logout),
@@ -124,7 +123,8 @@ class HomeRiderPage extends StatelessWidget {
                       const SizedBox(height: 5),
                       Text('เบอร์โทร: ${order.phoneNumber}'),
                       Text('ที่อยู่ : ${order.address}'),
-                      const Divider(height: 20, thickness: 1, color: Colors.black),
+                      const Divider(
+                          height: 20, thickness: 1, color: Colors.black),
                       Center(
                         child: Text(
                           'ผู้รับ : วันวาน ถึง',
@@ -134,7 +134,8 @@ class HomeRiderPage extends StatelessWidget {
                       const SizedBox(height: 5),
                       Text('เบอร์โทร: 0245896125'),
                       Text('ที่อยู่ : 55/555 ต.ตรง อ.ทกท จ.จงพพพ'),
-                      const Divider(height: 20, thickness: 1, color: Colors.black),
+                      const Divider(
+                          height: 20, thickness: 1, color: Colors.black),
                       const Text(
                         'รายการของที่สั่ง',
                         style: TextStyle(fontSize: 18),
@@ -147,8 +148,7 @@ class HomeRiderPage extends StatelessWidget {
                         itemBuilder: (context, itemIndex) {
                           final item = order.items[itemIndex];
                           return ListTile(
-                            leading:
-                                Image.asset(item.imageUrl), // รูปสินค้า
+                            leading: Image.asset(item.imageUrl), // รูปสินค้า
                             title: Text(item.name),
                           );
                         },
@@ -187,8 +187,7 @@ class HomeRiderPage extends StatelessWidget {
                               // โค้ดยกเลิกออเดอร์
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Color.fromRGBO(254, 116, 116, 1),
+                              backgroundColor: Color.fromRGBO(254, 116, 116, 1),
                             ),
                             child: const Text('ยกเลิกออเดอร์',
                                 style: TextStyle(color: Colors.white)),
@@ -198,8 +197,7 @@ class HomeRiderPage extends StatelessWidget {
                               // โค้ดยืนยันรับออเดอร์
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Color.fromRGBO(255, 174, 0, 1),
+                              backgroundColor: Color.fromRGBO(255, 174, 0, 1),
                             ),
                             child: const Text('ยืนยันรับออเดอร์',
                                 style: TextStyle(color: Colors.white)),

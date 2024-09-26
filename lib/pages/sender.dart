@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_delivery/pages/homerider.dart';
 import 'package:flutter_delivery/pages/statusRider.dart'; // Import your StatusPage
 
 class SenderPage extends StatelessWidget {
@@ -90,7 +91,8 @@ class SenderPage extends StatelessWidget {
                           itemBuilder: (context, itemIndex) {
                             final item = order.items[itemIndex];
                             return ListTile(
-                              leading: Image.asset(item.imageUrl, width: 50, height: 50),
+                              leading: Image.asset(item.imageUrl,
+                                  width: 50, height: 50),
                               title: Text(item.name),
                             );
                           },
@@ -102,8 +104,7 @@ class SenderPage extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        StatusPage(orderId: order.id)),
+                                    builder: (context) => StatusPage()),
                               );
                             },
                             style: ElevatedButton.styleFrom(
@@ -112,7 +113,8 @@ class SenderPage extends StatelessWidget {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 30, vertical: 10),
                             ),
                             child: Text('ดูสถานะการจัดส่ง'),
                           ),
