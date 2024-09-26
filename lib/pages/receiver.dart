@@ -41,7 +41,7 @@ class ReceiverPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('สินค้าที่ต้องจัดส่งทั้งหมด'),
+        title: Text('สินค้าที่จัดส่งทั้งหมด'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),

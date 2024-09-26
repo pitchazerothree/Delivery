@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_delivery/pages/receiver.dart';
+import 'package:flutter_delivery/pages/sender.dart';
 import 'package:flutter_delivery/pages/userMe.dart';
 
 class UserPage extends StatelessWidget {
@@ -33,7 +34,7 @@ class UserPage extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          ReceiverPage()), // Adjust the page to navigate to
+                          SenderPage()), // Adjust the page to navigate to
                 );
               },
             ),
