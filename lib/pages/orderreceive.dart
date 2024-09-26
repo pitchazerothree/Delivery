@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_delivery/pages/realtimeRider.dart'; // นำเข้าหน้า realtimeRider
+import 'package:flutter_delivery/pages/orderReceive.dart'; // นำเข้าหน้า orderReceive
 
 class OrderReceivePage extends StatelessWidget {
   final Order order = Order(
@@ -34,15 +36,18 @@ class OrderReceivePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // const SizedBox(height: 50), // เพิ่มระยะห่างจากด้านบน
-            _buildOrderCard(order),
+            _buildOrderCard(order, context),
             const SizedBox(height: 20),
             _buildCameraSection(),
             const SizedBox(height: 20),
             Center(
               child: TextButton(
                 onPressed: () {
-                  // การดำเนินการต่อ
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => RealtimeRiderPage()),
+                  );
                 },
                 style: TextButton.styleFrom(
                   backgroundColor: Color.fromRGBO(255, 179, 14, 1),
@@ -61,7 +66,7 @@ class OrderReceivePage extends StatelessWidget {
     );
   }
 
-  Widget _buildOrderCard(Order order) {
+  Widget _buildOrderCard(Order order, BuildContext context) {
     return Card(
       color: Color.fromRGBO(254, 172, 195, 1),
       shape: RoundedRectangleBorder(
@@ -128,41 +133,18 @@ class OrderReceivePage extends StatelessWidget {
                   ),
                   child: TextButton(
                     onPressed: () {
-                      // โค้ดเมื่อกดปุ่ม
+                      // นำทางไปยัง OrderReceivePage โดยใช้ pushReplacement
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RealtimeRiderPage()),
+                      );
                     },
                     child: const Text(
                       'คลิกเพื่อดูตำแหน่ง',
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            const Divider(height: 20, thickness: 1, color: Colors.black),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // โค้ดยกเลิกออเดอร์
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(254, 116, 116, 1),
-                  ),
-                  child: const Text('ยกเลิกออเดอร์',
-                      style: TextStyle(color: Colors.white)),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // โค้ดยืนยันรับออเดอร์
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(255, 174, 0, 1),
-                  ),
-                  child: const Text('ยืนยันรับออเดอร์',
-                      style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_delivery/pages/login.dart';
+import 'package:flutter_delivery/pages/orderReceive.dart'; // เพิ่มการนำเข้า
 
 class HomeRiderPage extends StatelessWidget {
   final List<Order> orders = [
@@ -7,7 +8,7 @@ class HomeRiderPage extends StatelessWidget {
       id: 50,
       name: 'ตะวันชา ฟ้าใส',
       phoneNumber: '0222222222',
-      address: '55/555 ต.ตรง อ.นบน จ.อออออ',
+      address: '55/555 ต.ตรง อ.นบน จ.ออออ',
       items: [
         OrderItem(
           name: 'ชาเขียวใบ',
@@ -195,6 +196,12 @@ class HomeRiderPage extends StatelessWidget {
                           ElevatedButton(
                             onPressed: () {
                               // โค้ดยืนยันรับออเดอร์
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => OrderReceivePage(), // นำทางไปหน้า OrderReceivePage
+                                ),
+                              );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color.fromRGBO(255, 174, 0, 1),

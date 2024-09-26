@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'homeRider.dart'; // นำเข้า HomeRiderPage
 
 class OrderSenderPage extends StatelessWidget {
   final Order order = Order(
@@ -36,26 +37,26 @@ class OrderSenderPage extends StatelessWidget {
           children: [
             _buildOrderCard(order),
             const SizedBox(height: 20),
-            _buildCameraSection(),
+            _buildCameraSection(context),
             const SizedBox(height: 20),
             Center(
               child: TextButton(
                 onPressed: () {
-                  // การดำเนินการต่อ
+                  // นำไปยังหน้า HomeRiderPage
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeRiderPage()),
+                  );
                 },
                 style: TextButton.styleFrom(
-                  backgroundColor:
-                      Color.fromRGBO(92, 203, 55, 1), // สีพื้นหลัง
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 50, vertical: 15), // ขนาดปุ่ม
+                  backgroundColor: Color.fromRGBO(92, 203, 55, 1), // สีพื้นหลัง
+                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15), // ขนาดปุ่ม
                   shape: const RoundedRectangleBorder(
-                    // ให้ปุ่มเป็นสี่เหลี่ยม
                     borderRadius: BorderRadius.zero, // ไม่มีมุมโค้ง
                   ),
                 ),
                 child: const Text('ส่งสินค้าสำเร็จ',
-                    style: TextStyle(
-                        fontSize: 18, color: Colors.white)), // เปลี่ยนสีข้อความ
+                    style: TextStyle(fontSize: 18, color: Colors.white)), // เปลี่ยนสีข้อความ
               ),
             ),
           ],
@@ -141,41 +142,13 @@ class OrderSenderPage extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
-            const Divider(height: 20, thickness: 1, color: Colors.black),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // โค้ดยกเลิกออเดอร์
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(254, 116, 116, 1),
-                  ),
-                  child: const Text('ยกเลิกออเดอร์',
-                      style: TextStyle(color: Colors.white)),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // โค้ดยืนยันรับออเดอร์
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(255, 174, 0, 1),
-                  ),
-                  child: const Text('ยืนยันรับออเดอร์',
-                      style: TextStyle(color: Colors.white)),
-                ),
-              ],
-            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildCameraSection() {
+  Widget _buildCameraSection(BuildContext context) {
     return Column(
       children: [
         const Text(
