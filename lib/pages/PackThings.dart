@@ -14,9 +14,9 @@ class _PackThingsPageState extends State<PackThingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('จัดส่งสินค้า'),
+        title: const Text('จัดส่งสินค้า'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -31,40 +31,40 @@ class _PackThingsPageState extends State<PackThingsPage> {
               isProceeding
                   ? _buildStatusPhotoSection()
                   : _buildItemUploadSection(),
-              SizedBox(height: 20),
-              Align(
+              const SizedBox(height: 20),
+              const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'สรุปรายการที่จัดส่ง',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Container(
-                color: Color(0xFFFFC0CB),
-                padding: EdgeInsets.all(15),
+                color: const Color(0xFFFFC0CB),
+                padding: const EdgeInsets.all(15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'บริสา ดูดี',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    Text('0245879532'),
-                    Text('18/54 ต.นาบี อ.ดงพนม จ.อุตร 23519'),
-                    SizedBox(height: 10),
-                    Divider(),
-                    Text('รายการของที่ส่ง'),
-                    SizedBox(height: 5),
+                    const Text('0245879532'),
+                    const Text('18/54 ต.นาบี อ.ดงพนม จ.อุตร 23519'),
+                    const SizedBox(height: 10),
+                    const Divider(),
+                    const Text('รายการของที่ส่ง'),
+                    const SizedBox(height: 5),
                     Row(
                       children: [
                         Image.asset(
                           'assets/images/fan.png',
                           height: 50,
                         ),
-                        SizedBox(width: 10),
-                        Text(
+                        const SizedBox(width: 10),
+                        const Text(
                           'พัดลม',
                           style: TextStyle(fontSize: 16),
                         ),
@@ -73,7 +73,7 @@ class _PackThingsPageState extends State<PackThingsPage> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   if (isProceeding) {
@@ -91,13 +91,14 @@ class _PackThingsPageState extends State<PackThingsPage> {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: isProceeding
-                      ? Color(0xFF00FF00) // Light green color
-                      : Color(0xFFFFA500), // Orange color
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                      ? const Color(0xFF00FF00) // Light green color
+                      : const Color(0xFFFFA500), // Orange color
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                 ),
                 child: Text(
                   isProceeding ? 'ยืนยันการจัดส่งสินค้า' : 'ดำเนินการต่อ',
-                  style: TextStyle(fontSize: 18, color: Colors.black),
+                  style: const TextStyle(fontSize: 18, color: Colors.black),
                 ),
               ),
             ],
@@ -109,27 +110,27 @@ class _PackThingsPageState extends State<PackThingsPage> {
 
   Widget _buildItemUploadSection() {
     return Container(
-      padding: EdgeInsets.all(15),
-      color: Color(0xFFFFC0CB),
+      padding: const EdgeInsets.all(15),
+      color: const Color(0xFFFFC0CB),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
+          const Text(
             'เพิ่มของที่จะส่ง',
             style: TextStyle(fontSize: 18),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Container(
             height: 150,
             width: double.infinity,
             color: Colors.white,
-            child: Icon(
+            child: const Icon(
               Icons.camera_alt_outlined,
               size: 80,
               color: Colors.black,
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           ElevatedButton(
             onPressed: () {
               // Implement image picking logic
@@ -139,14 +140,14 @@ class _PackThingsPageState extends State<PackThingsPage> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
             ),
-            child: Text(
+            child: const Text(
               'เพิ่มรูป',
               style: TextStyle(color: Colors.black),
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           TextField(
             decoration: InputDecoration(
               hintText: 'ชื่อของที่จะส่ง',
@@ -158,19 +159,19 @@ class _PackThingsPageState extends State<PackThingsPage> {
               ),
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           ElevatedButton(
             onPressed: () {
               // Implement confirmation logic
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF00FF00),
+              backgroundColor: const Color(0xFF00FF00),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
             ),
-            child: Text(
+            child: const Text(
               'ตกลง',
               style: TextStyle(color: Colors.black),
             ),
@@ -182,39 +183,39 @@ class _PackThingsPageState extends State<PackThingsPage> {
 
   Widget _buildStatusPhotoSection() {
     return Container(
-      padding: EdgeInsets.all(15),
-      color: Color(0xFFFFC0CB),
+      padding: const EdgeInsets.all(15),
+      color: const Color(0xFFFFC0CB),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
+          const Text(
             'ถ่ายรูปประกอบสถานะ',
             style: TextStyle(fontSize: 18),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Container(
             height: 150,
             width: double.infinity,
             color: Colors.white,
-            child: Icon(
+            child: const Icon(
               Icons.camera_alt_outlined,
               size: 80,
               color: Colors.black,
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           ElevatedButton(
             onPressed: () {
               // Implement camera functionality
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFFFF00FF),
+              backgroundColor: const Color(0xFFFF00FF),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
             ),
-            child: Text(
+            child: const Text(
               'ถ่ายรูป',
               style: TextStyle(color: Colors.white),
             ),
