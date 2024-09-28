@@ -31,9 +31,9 @@ class _PackThingsPageState extends State<PackThingsPage> {
               isProceeding
                   ? _buildStatusPhotoSection()
                   : _buildItemUploadSection(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 50),
               const Align(
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 child: Text(
                   'สรุปรายการที่จัดส่ง',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -73,7 +73,7 @@ class _PackThingsPageState extends State<PackThingsPage> {
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 50),
               ElevatedButton(
                 onPressed: () {
                   if (isProceeding) {
