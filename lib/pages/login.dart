@@ -31,12 +31,8 @@ class LoginPage extends StatelessWidget {
             left: 0,
             right: 0,
             child: ClipRRect(
-<<<<<<< HEAD
               borderRadius: const BorderRadius.vertical(
                   bottom: Radius.circular(10)), // กำหนดขนาดของขอบโค้ง
-=======
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
->>>>>>> 45b8588 (kkk)
               child: Image.asset(
                 'assets/images/logo.png',
                 height: 250,
@@ -62,12 +58,8 @@ class LoginPage extends StatelessWidget {
                         padding: const EdgeInsets.all(30.0),
                         child: Column(
                           children: [
-<<<<<<< HEAD
                             // ป้ายกำกับสำหรับหมายเลขโทรศัพท์
                             const Align(
-=======
-                            Align(
->>>>>>> 45b8588 (kkk)
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 'หมายเลขโทรศัพท์ :',
@@ -101,12 +93,8 @@ class LoginPage extends StatelessWidget {
                               keyboardType: TextInputType.phone,
                             ),
                             const SizedBox(height: 20),
-<<<<<<< HEAD
                             // ป้ายกำกับสำหรับรหัสผ่าน
                             const Align(
-=======
-                            Align(
->>>>>>> 45b8588 (kkk)
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 'รหัสผ่าน :',
@@ -186,7 +174,7 @@ class LoginPage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const RegisterUser()),
+                                  builder: (context) => RegisterUser()),
                             );
                           },
                           child: const Text('สมัครสมาชิก (User)'),
