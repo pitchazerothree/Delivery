@@ -74,7 +74,8 @@ class _RegisterRiderState extends State<RegisterRider> {
         _imageUrl == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('กรุณากรอกข้อมูลให้ครบทุกช่อง และเลือกภาพโปรไฟล์')),
+          content: Text('กรุณากรอกข้อมูลให้ครบทุกช่อง และเลือกภาพโปรไฟล์'),
+        ),
       );
       return; // Stop further execution if validation fails
     }
@@ -85,6 +86,16 @@ class _RegisterRiderState extends State<RegisterRider> {
         const SnackBar(content: Text('หมายเลขโทรศัพท์ต้องมีความยาว 10 ตัว')),
       );
       return; // Stop further execution if phone number is invalid
+    }
+
+    // Check if phone number already exists
+    QuerySnapshot snapshot =
+        await users.where('phone', isEqualTo: phoneController.text).get();
+    if (snapshot.docs.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('หมายเลขโทรศัพท์นี้เคยสมัครแล้ว!')),
+      );
+      return; // Stop further execution if phone number already exists
     }
 
     try {

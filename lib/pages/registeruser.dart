@@ -478,92 +478,59 @@ class _MemberUserPageState extends State<RegisterUser> {
   }
 
   void register() async {
-    // รับค่าจาก controller และใช้ trim เพื่อลบช่องว่าง
+    // Validate inputs
+    if (!_formKey.currentState!.validate()) return;
+
     String name = nameNoCtl.text.trim();
     String phone = phoneNoCtl.text.trim();
     String address = addressNoCtl.text.trim();
     String password = passwordNoCtl.text.trim();
-    String confirmPassword = confirmpasswordNoCtl.text.trim();
 
-    if (password != confirmPassword) {
-      Get.snackbar('Message Error !!!', 'รหัสผ่านไม่ถูกต้อง ลองใหม่อีกครั้ง',
+    // Ensure latitude, longitude, and image URL are valid
+    if (latitude == 0.0 || longitude == 0.0 || _imageUrl == null) {
+      Get.snackbar('Message Error !!!', 'กรุณาเพิ่มที่อยู่จาก GPS และรูปภาพ',
           snackPosition: SnackPosition.TOP);
-    } else if (_imageUrl == null) {
-      const SnackBar(
-        content: Text('เลือกสักรุปสิ 🤔.'),
-      );
+      return;
     }
 
-    if (password == confirmPassword &&
-        name.isNotEmpty &&
-        phone.isNotEmpty &&
-        address.isNotEmpty &&
-        password.isNotEmpty &&
-        phone.length == 10 && // เช็คเบอร์โทรศัพท์ต้องเป็น 10 ตัว
-        latitude != 0.0 && // เช็ค latitude
-        longitude != 0.0 && // เช็ค longitude
-        _imageUrl != null) {
-      // Log field values สำหรับการ debug
-      log('Name: $name');
-      log('Phone: $phone');
-      log('Address: $address');
-      log('Password: $password');
-      log('Latitude: $latitude');
-      log('Longitude: $longitude');
-      log('Image URL: $_imageUrl');
+    try {
+      CollectionReference users =
+          FirebaseFirestore.instance.collection('register');
 
-      try {
-        // อ้างอิงถึง Collection "Users"
-        CollectionReference users =
-            FirebaseFirestore.instance.collection('register');
-
-        // ตรวจสอบว่าหมายเลขโทรศัพท์นี้มีอยู่แล้วหรือไม่
-        DocumentSnapshot existingUser = await users.doc(phone).get();
-
-        if (existingUser.exists) {
-          // แสดงข้อผิดพลาดหากหมายเลขโทรศัพท์มีอยู่แล้ว
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text('This phone number is already registered.')),
-          );
-          return;
-        }
-
-        // เพิ่มข้อมูลไปยัง Firestore
-        // await users.doc(phone).set({
-        await users.add({
-          'name': name,
-          'phone': phone,
-          'address': address,
-          'password': password,
-          'image': _imageUrl,
-          'latitude': latitude,
-          'longitude': longitude,
-          'type': 'user',
-        });
-
-        log('User registered successfully in Firestore');
-        // นำทางไปยังหน้า home หากการสมัครสำเร็จ
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LoginPage(),
-          ),
-        );
-      } catch (error) {
-        log('Error: $error');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error during registration: $error')),
-        );
+      // Check if the phone number already exists
+      DocumentSnapshot existingUser = await users.doc(phone).get();
+      if (existingUser.exists) {
+        Get.snackbar(
+            'Message Error !!!', 'หมายเลขโทรศัพท์นี้มีการลงทะเบียนแล้ว',
+            snackPosition: SnackPosition.TOP);
+        return;
       }
-    } else {
-      // แสดงข้อผิดพลาดหากข้อมูลไม่ถูกต้อง
-      String errorMessage = 'Please fill all fields';
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage)),
+
+      // Add the user to Firestore
+      await users.doc(phone).set({
+        // Store using phone number as the document ID
+        'name': name,
+        'phone': phone,
+        'address': address,
+        'password':
+            password, // Consider using Firebase Auth for better security
+        'image': _imageUrl,
+        'latitude': latitude,
+        'longitude': longitude,
+        'type': 'user',
+      });
+
+      log('User registered successfully in Firestore');
+
+      // Navigate to the login page
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
       );
+    } catch (error) {
+      log('Error during registration: $error');
+      Get.snackbar('Message Error !!!', 'Error during registration: $error',
+          snackPosition: SnackPosition.TOP);
     }
   }
 }
-
-
