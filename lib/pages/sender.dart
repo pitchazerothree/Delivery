@@ -1,7 +1,9 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore package
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_delivery/pages/PackThings.dart';
 import 'package:flutter_delivery/pages/SendProduct.dart';
-import 'package:flutter_delivery/pages/PackThings.dart'; // Import the PackThings page
+import 'package:flutter_delivery/pages/model/Response/getUsers_res.dart';
 
 class SenderPage extends StatefulWidget {
   @override
@@ -9,81 +11,164 @@ class SenderPage extends StatefulWidget {
 }
 
 class _SenderPageState extends State<SenderPage> {
-  int _selectedIndex = 0; // To track the currently selected index
-  final TextEditingController phoneNoCtl =
-      TextEditingController(); // ใช้ phoneNoCtl สำหรับค้นหา
+  int _selectedIndex = 0;
+  final TextEditingController phoneNoCtl = TextEditingController();
+  List<GetUsersRes> users = []; // เก็บรายการผู้ใช้ที่ค้นหาได้
+  String _userNoResultMessage = ''; // ข้อความเมื่อไม่พบผู้ใช้
+  bool isLoading = false; // แสดงสถานะการโหลดข้อมูล
+  late Future<void> loadData;
 
-  // Create TextEditingControllers for name and address
-  TextEditingController nameNoCtl = TextEditingController();
-  TextEditingController addressNoCtl = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    loadData = getMember();
+  }
 
-  List<Map<String, String>> searchResults = []; // Store search results
-
+  // ฟังก์ชันเปลี่ยนหน้าใน BottomNavigationBar
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index; // Update the selected index
+      _selectedIndex = index;
     });
 
-    // Navigate to the appropriate page based on the selected index
     if (index == 0) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => SenderPage()), // Current Page
+        MaterialPageRoute(builder: (context) => SenderPage()),
       );
     } else {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-            builder: (context) => SenderProductPage()), // Product Page
+        MaterialPageRoute(builder: (context) => SenderProductPage()),
       );
     }
   }
 
-  Future<void> _searchUser() async {
-    // Clear previous search results
-    searchResults.clear();
+  // ฟังก์ชันค้นหาผู้ใช้จาก Firestore ด้วยเบอร์โทร
+  void _searchUsers(String query) async {
+    setState(() {
+      isLoading = true; // เริ่มแสดงการโหลด
+    });
 
-    // Get the input from the phoneNoCtl TextField
-    String phoneNumber = phoneNoCtl.text.trim(); // Trim whitespace
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection('register').get();
 
-    if (phoneNumber.isEmpty) {
-      // Show error if phone number is empty
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('กรุณากรอกหมายเลขโทรศัพท์')),
-      );
-      return;
-    }
+      // กรองข้อมูลผู้ใช้ตามหมายเลขโทรศัพท์
+      List<GetUsersRes> foundUsers = querySnapshot.docs
+          .map((doc) {
+            Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+            if (data.containsKey('phone') && data['phone'] is String) {
+              String phone = data['phone'];
+              if (phone.contains(query)) {
+                return GetUsersRes.fromJson(data, doc.id);
+              }
+            }
+            return null;
+          })
+          .where((user) => user != null) // กรองค่าที่เป็น null
+          .cast<GetUsersRes>()
+          .toList();
 
-    // Query the Firestore database
-    QuerySnapshot snapshot = await FirebaseFirestore.instance
-        .collection('register')
-        .where('phone',
-            isEqualTo: phoneNumber) // Adjust this field name as necessary
-        .get();
+      setState(() {
+        users = foundUsers; // อัปเดตรายการผู้ใช้
+        _userNoResultMessage = users.isEmpty ? 'ไม่พบผู้ใช้ที่ค้นหา' : '';
+        isLoading = false; // หยุดการโหลด
+      });
 
-    // Debugging: Check the number of documents retrieved
-    print('Number of documents: ${snapshot.docs.length}');
-
-    // Process the results
-    for (var doc in snapshot.docs) {
-      // Add each user to the search results
-      searchResults.add({
-        'name': doc[
-            'name'], // Adjust field names according to your Firestore structure
-        'phone': doc['phone'],
-        'address': doc['address'],
+      log("Found Users: ${foundUsers.map((user) => user.name).toList()}");
+    } catch (e) {
+      log("เกิดข้อผิดพลาด: $e");
+      setState(() {
+        isLoading = false; // หยุดการโหลดเมื่อเกิดข้อผิดพลาด
       });
     }
+  }
 
-    // Refresh the UI
-    setState(() {});
+  Future<void> getMember() async {
+    try {
+      // เข้าถึง collection "Users" และกรองด้วย type เป็น "user"
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('register')
+          .where('type', isEqualTo: 'user')
+          .get();
+
+      // แปลงข้อมูลจากเอกสารใน QuerySnapshot เป็น List<GetUsersRes>
+      List<GetUsersRes> allUsers = getUsersResFromQuerySnapshot(querySnapshot);
+
+      setState(() {
+        users = allUsers; // กำหนด users ให้เป็น List<GetUsersRes>
+        log('data : $allUsers');
+        _userNoResultMessage = allUsers.isEmpty ? "ไม่มีผู้ใช้ที่จะแสดง" : '';
+      });
+    } catch (e) {
+      log('Error fetching users: $e');
+      print('Error: $e');
+    }
+  }
+
+  // ฟังก์ชันสร้างการ์ดแสดงผลผู้ใช้
+  Widget buildRecipientCard(GetUsersRes user) {
+    return Card(
+      color: const Color(0xFFFFC0CB),
+      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    user.name,
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    user.phone,
+                    style: const TextStyle(fontSize: 16),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    user.address,
+                    style: const TextStyle(fontSize: 14),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 10),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PackThingsPage()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(0.0),
+                ),
+              ),
+              child: const Text(
+                'เลือก',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ค้นหาผู้รับ'), // App bar title
+        title: const Text('ค้นหาผู้รับ'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -104,7 +189,7 @@ class _SenderPageState extends State<SenderPage> {
               ),
               const SizedBox(height: 10),
               TextField(
-                controller: phoneNoCtl, // Set the controller here
+                controller: phoneNoCtl,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color(0xFFFFC0CB),
@@ -117,7 +202,9 @@ class _SenderPageState extends State<SenderPage> {
               ),
               const SizedBox(height: 10),
               ElevatedButton(
-                onPressed: _searchUser, // Call search function
+                onPressed: () {
+                  _searchUsers(phoneNoCtl.text); // เรียกฟังก์ชันค้นหา
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFFFC0CB),
                   shape: RoundedRectangleBorder(
@@ -133,26 +220,22 @@ class _SenderPageState extends State<SenderPage> {
               ),
               const SizedBox(height: 20),
               const Align(
-                alignment: Alignment.centerLeft, // Move text to the left
+                alignment: Alignment.centerLeft,
                 child: Text(
                   'ผลการค้นหา',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
               const SizedBox(height: 10),
-              // Display search results
-              if (searchResults.isEmpty)
-                const Text(
-                    'ไม่พบผู้รับที่ค้นหา') // Message when no results found
+              if (isLoading)
+                const CircularProgressIndicator() // แสดงการโหลด
+              else if (users.isEmpty)
+                Text(_userNoResultMessage) // แสดงข้อความเมื่อไม่พบข้อมูล
               else
                 Column(
-                  children: searchResults
-                      .map((recipient) => buildRecipientCard(
-                            recipient['name']!,
-                            recipient['phone']!,
-                            recipient['address']!,
-                          ))
-                      .toList(),
+                  children: users.map((user) {
+                    return buildRecipientCard(user); // แสดงการ์ดผู้ใช้
+                  }).toList(),
                 ),
             ],
           ),
@@ -164,77 +247,10 @@ class _SenderPageState extends State<SenderPage> {
           BottomNavigationBarItem(
               icon: Icon(Icons.send), label: 'สินค้าที่ต้องส่ง'),
         ],
-        currentIndex: _selectedIndex, // Highlight the current index
+        currentIndex: _selectedIndex,
         backgroundColor: const Color.fromRGBO(254, 172, 195, 1),
         selectedItemColor: Colors.black,
-        onTap: _onItemTapped, // Handle tap events
-      ),
-    );
-  }
-
-  Widget buildRecipientCard(String name, String phone, String address) {
-    // Set the text fields with the found recipient's information
-    nameNoCtl.text = name;
-    phoneNoCtl.text = phone; // Optional: You can display this as well
-    addressNoCtl.text = address;
-
-    return Card(
-      color: const Color(0xFFFFC0CB),
-      margin: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              // Allow text to take available space
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name,
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                    overflow: TextOverflow.ellipsis, // Prevent overflow
-                  ),
-                  Text(
-                    phone,
-                    style: const TextStyle(fontSize: 16),
-                    overflow: TextOverflow.ellipsis, // Prevent overflow
-                  ),
-                  Text(
-                    address,
-                    style: const TextStyle(fontSize: 14),
-                    overflow: TextOverflow.ellipsis, // Prevent overflow
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 10), // Add spacing between text and button
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to the PackThings page when selected
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        PackThingsPage(), // Navigate to PackThings
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(0.0),
-                ),
-              ),
-              child: const Text(
-                'เลือก',
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-          ],
-        ),
+        onTap: _onItemTapped,
       ),
     );
   }

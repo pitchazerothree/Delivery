@@ -53,7 +53,7 @@ class UserProfile {
     this.type = '',
   });
 
-  factory UserProfile.fromJson(Map<String, dynamic> json) {
+  factory UserProfile.fromJson(Map<String, dynamic> json, String id) {
     return UserProfile(
       id: json['id'] ?? '',
       name: json['name'] ?? '',
@@ -80,7 +80,8 @@ class UserProfile {
       'type': type,
     };
   }
-   @override
+
+  @override
   String toString() {
     return 'UserProfile(id: $id, name: $name, phone: $phone)';
   }
@@ -128,7 +129,8 @@ class RiderProfile {
       'type': type,
     };
   }
-   @override
+
+  @override
   String toString() {
     return 'UserProfile(id: $id, name: $name, phone: $phone)';
   }
