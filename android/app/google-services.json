@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "650960577573",
+    "project_id": "projectrider-e0473",
+    "storage_bucket": "projectrider-e0473.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:650960577573:android:dde0b1ef93e12a3be94bcc",
+        "android_client_info": {
+          "package_name": "com.example.flutter_delivery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGevs9yNpQLZwJlBrwsQ4xPvtQOGwkC3c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
