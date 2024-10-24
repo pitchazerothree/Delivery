@@ -34,7 +34,8 @@ class RealtimeRiderPage extends StatelessWidget {
                   const Text('เส้นทาง',
                       style:
                           TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 20), // ช่องว่างระหว่าง 'เส้นทาง' กับการ์ด
+                  const SizedBox(
+                      height: 20), // ช่องว่างระหว่าง 'เส้นทาง' กับการ์ด
                   // การ์ดที่ครอบคลุมทั้งตำแหน่งของฉัน, จุดหมาย, และระยะทาง
                   _buildCombinedInfoCard(
                       myLocation, destination, distance, time),
@@ -43,7 +44,9 @@ class RealtimeRiderPage extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => OrderSenderPage()), // เปลี่ยนไปที่หน้า orderSender
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                OrderSenderPage()), // เปลี่ยนไปที่หน้า orderSender
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -122,7 +125,8 @@ class RealtimeRiderPage extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Color.fromRGBO(255, 206, 249, 1), // เปลี่ยนสีพื้นหลังเป็นสีที่คุณต้องการ
+              color: Color.fromRGBO(
+                  255, 206, 249, 1), // เปลี่ยนสีพื้นหลังเป็นสีที่คุณต้องการ
               borderRadius: BorderRadius.circular(6), // มุมโค้ง
               boxShadow: [
                 BoxShadow(

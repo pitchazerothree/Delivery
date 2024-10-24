@@ -1,8 +1,11 @@
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-
-import 'package:image_picker/image_picker.dart'; // For handling file operations
+import 'package:uuid/uuid.dart';
 
 class RegisterRider extends StatefulWidget {
   @override
@@ -18,36 +21,83 @@ class _RegisterRiderState extends State<RegisterRider> {
       FirebaseFirestore.instance.collection('register');
 
   File? _image; // Store the selected image
+  String? _imageUrl; // Variable to store image URL
   final ImagePicker _picker = ImagePicker(); // Initialize ImagePicker
 
   // Function to pick an image from gallery or camera
-  Future<void> pickImage(ImageSource source) async {
+  void pickImage(ImageSource source) async {
     try {
-      final pickedFile = await _picker.pickImage(source: source);
+      final XFile? pickedFile = await _picker.pickImage(source: source);
+
       if (pickedFile != null) {
         setState(() {
-          _image = File(pickedFile.path); // Set the selected image
+          _image = File(pickedFile.path);
         });
+        await _uploadImage(_image!);
+      } else {
+        Get.snackbar('Message Error !!!', 'เลือกสักรุปสิ 🤔',
+            snackPosition: SnackPosition.TOP);
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('ไม่สามารถเลือกรูปได้: $e')),
-      );
+      log("Error picking image: $e" as num);
     }
   }
 
-  // Function to register user in Firestore
+  Future<void> _uploadImage(File image) async {
+    try {
+      String fileName = '${Uuid().v4()}.jpg'; // Create a unique filename
+      Reference ref = FirebaseStorage.instance.ref('userImage/$fileName');
+
+      // Upload file to Firebase Storage
+      UploadTask uploadTask = ref.putFile(image);
+      TaskSnapshot snapshot = await uploadTask;
+
+      if (snapshot.state == TaskState.success) {
+        // Get the URL of the uploaded image
+        _imageUrl = await ref.getDownloadURL();
+        log('Image uploaded successfully: $_imageUrl' as num);
+      } else {
+        log('Upload failed with state: ${snapshot.state}' as num);
+      }
+    } catch (e) {
+      log('Error uploading image: $e' as num);
+    }
+  }
+
+  // Function to register user in Firestore with validation
   Future<void> registerRider() async {
+    // Check if any field is empty or image URL is not available
+    if (nameController.text.isEmpty ||
+        passwordController.text.isEmpty ||
+        phoneController.text.isEmpty ||
+        vehicleController.text.isEmpty ||
+        _imageUrl == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('กรุณากรอกข้อมูลให้ครบทุกช่อง และเลือกภาพโปรไฟล์')),
+      );
+      return; // Stop further execution if validation fails
+    }
+
+    // Check if phone number is exactly 10 digits
+    if (phoneController.text.length != 10) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('หมายเลขโทรศัพท์ต้องมีความยาว 10 ตัว')),
+      );
+      return; // Stop further execution if phone number is invalid
+    }
+
     try {
       await users.add({
         'name': nameController.text,
         'password': passwordController.text,
         'phone': phoneController.text,
         'vehicle': vehicleController.text,
-        'profileImage': _image?.path ?? '', // Store image path if available
+        'profileImage': _imageUrl, // Store image URL
+        'type': 'Rider', // Add user type as 'Rider'
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('ลงทะเบียนสำเร็จ!')),
+        const SnackBar(content: Text('ลงทะเบียนสำเร็จ!')),
       );
       Navigator.of(context).pop(); // Go back after registration
     } catch (e) {
@@ -60,15 +110,15 @@ class _RegisterRiderState extends State<RegisterRider> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(254, 172, 195, 1),
+      backgroundColor: const Color.fromRGBO(254, 172, 195, 1),
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(254, 172, 195, 1),
+        backgroundColor: const Color.fromRGBO(254, 172, 195, 1),
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text(
+        title: const Text(
           'สมัครสมาชิก(rider)',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
@@ -80,14 +130,14 @@ class _RegisterRiderState extends State<RegisterRider> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               CircleAvatar(
                 radius: 50,
                 backgroundImage:
                     _image != null ? FileImage(_image!) : null, // Show image
                 backgroundColor: Colors.white,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -100,13 +150,13 @@ class _RegisterRiderState extends State<RegisterRider> {
                         borderRadius: BorderRadius.circular(3),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'เพิ่มรูปจากแกลเลอรี',
                       style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   ElevatedButton(
                     onPressed: () => pickImage(ImageSource.camera),
                     style: ElevatedButton.styleFrom(
@@ -116,7 +166,7 @@ class _RegisterRiderState extends State<RegisterRider> {
                         borderRadius: BorderRadius.circular(3),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'ถ่ายรูป',
                       style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.bold),
@@ -124,24 +174,25 @@ class _RegisterRiderState extends State<RegisterRider> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               buildTextField("ชื่อ :", nameController),
               buildTextField("รหัสผ่าน :", passwordController,
                   isPassword: true),
               buildTextField("หมายเลขโทรศัพท์ :", phoneController,
                   keyboardType: TextInputType.phone),
               buildTextField("ทะเบียนรถ :", vehicleController),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: registerRider,
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                   backgroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   'สมัครสมาชิก',
                   style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.bold),
@@ -166,14 +217,14 @@ class _RegisterRiderState extends State<RegisterRider> {
             alignment: Alignment.centerLeft,
             child: Text(
               labelText,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           TextFormField(
             controller: controller,
             obscureText: isPassword,
@@ -183,11 +234,11 @@ class _RegisterRiderState extends State<RegisterRider> {
               filled: true,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Colors.white),
+                borderSide: const BorderSide(color: Colors.white),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Colors.black),
+                borderSide: const BorderSide(color: Colors.black),
               ),
             ),
           ),
