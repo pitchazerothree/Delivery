@@ -44,7 +44,15 @@ class _SenderPageState extends State<SenderPage> {
     searchResults.clear();
 
     // Get the input from the phoneNoCtl TextField
-    String phoneNumber = phoneNoCtl.text;
+    String phoneNumber = phoneNoCtl.text.trim(); // Trim whitespace
+
+    if (phoneNumber.isEmpty) {
+      // Show error if phone number is empty
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('กรุณากรอกหมายเลขโทรศัพท์')),
+      );
+      return;
+    }
 
     // Query the Firestore database
     QuerySnapshot snapshot = await FirebaseFirestore.instance
@@ -52,6 +60,9 @@ class _SenderPageState extends State<SenderPage> {
         .where('phone',
             isEqualTo: phoneNumber) // Adjust this field name as necessary
         .get();
+
+    // Debugging: Check the number of documents retrieved
+    print('Number of documents: ${snapshot.docs.length}');
 
     // Process the results
     for (var doc in snapshot.docs) {
@@ -72,7 +83,7 @@ class _SenderPageState extends State<SenderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ค้นหาผู้รับ'), // App bar title
+        title: const Text('ค้นหาผู้รับ'), // App bar title
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -80,23 +91,23 @@ class _SenderPageState extends State<SenderPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Image.asset(
                 'assets/images/logo.png',
                 height: 150,
                 fit: BoxFit.contain,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               const Text(
                 'ค้นหาผู้รับโดยใช้หมายเลขโทรศัพท์',
                 style: TextStyle(fontSize: 15),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextField(
                 controller: phoneNoCtl, // Set the controller here
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: Color(0xFFFFC0CB),
+                  fillColor: const Color(0xFFFFC0CB),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
@@ -104,34 +115,35 @@ class _SenderPageState extends State<SenderPage> {
                 ),
                 keyboardType: TextInputType.phone,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: _searchUser, // Call search function
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFFFC0CB),
+                  backgroundColor: const Color(0xFFFFC0CB),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
                 ),
-                child: Text(
+                child: const Text(
                   'ค้นหา',
                   style: TextStyle(color: Colors.black),
                 ),
               ),
-              SizedBox(height: 20),
-              // Align text to the left
-              Align(
+              const SizedBox(height: 20),
+              const Align(
                 alignment: Alignment.centerLeft, // Move text to the left
-                child: const Text(
+                child: Text(
                   'ผลการค้นหา',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               // Display search results
               if (searchResults.isEmpty)
-                Text('ไม่พบผู้รับที่ค้นหา') // Message when no results found
+                const Text(
+                    'ไม่พบผู้รับที่ค้นหา') // Message when no results found
               else
                 Column(
                   children: searchResults
@@ -153,7 +165,7 @@ class _SenderPageState extends State<SenderPage> {
               icon: Icon(Icons.send), label: 'สินค้าที่ต้องส่ง'),
         ],
         currentIndex: _selectedIndex, // Highlight the current index
-        backgroundColor: Color.fromRGBO(254, 172, 195, 1),
+        backgroundColor: const Color.fromRGBO(254, 172, 195, 1),
         selectedItemColor: Colors.black,
         onTap: _onItemTapped, // Handle tap events
       ),
@@ -167,7 +179,7 @@ class _SenderPageState extends State<SenderPage> {
     addressNoCtl.text = address;
 
     return Card(
-      color: Color(0xFFFFC0CB),
+      color: const Color(0xFFFFC0CB),
       margin: const EdgeInsets.symmetric(vertical: 10.0),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -181,23 +193,24 @@ class _SenderPageState extends State<SenderPage> {
                 children: [
                   Text(
                     name,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
                     overflow: TextOverflow.ellipsis, // Prevent overflow
                   ),
                   Text(
                     phone,
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
                     overflow: TextOverflow.ellipsis, // Prevent overflow
                   ),
                   Text(
                     address,
-                    style: TextStyle(fontSize: 14),
+                    style: const TextStyle(fontSize: 14),
                     overflow: TextOverflow.ellipsis, // Prevent overflow
                   ),
                 ],
               ),
             ),
-            SizedBox(width: 10), // Add spacing between text and button
+            const SizedBox(width: 10), // Add spacing between text and button
             ElevatedButton(
               onPressed: () {
                 // Navigate to the PackThings page when selected
@@ -215,7 +228,7 @@ class _SenderPageState extends State<SenderPage> {
                   borderRadius: BorderRadius.circular(0.0),
                 ),
               ),
-              child: Text(
+              child: const Text(
                 'เลือก',
                 style: TextStyle(color: Colors.black),
               ),

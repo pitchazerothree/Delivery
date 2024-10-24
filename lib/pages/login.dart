@@ -13,9 +13,6 @@ import 'package:flutter_delivery/pages/userMe.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 
-
-
-
 class LoginPage extends StatelessWidget {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -31,8 +28,7 @@ class LoginPage extends StatelessWidget {
             left: 0,
             right: 0,
             child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(
-                  bottom: Radius.circular(10)), // กำหนดขนาดของขอบโค้ง
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
               child: Image.asset(
                 'assets/images/logo.png',
                 height: 250,
@@ -58,8 +54,7 @@ class LoginPage extends StatelessWidget {
                         padding: const EdgeInsets.all(30.0),
                         child: Column(
                           children: [
-                            // ป้ายกำกับสำหรับหมายเลขโทรศัพท์
-                            const Align(
+                            Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 'หมายเลขโทรศัพท์ :',
@@ -93,8 +88,7 @@ class LoginPage extends StatelessWidget {
                               keyboardType: TextInputType.phone,
                             ),
                             const SizedBox(height: 20),
-                            // ป้ายกำกับสำหรับรหัสผ่าน
-                            const Align(
+                            Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 'รหัสผ่าน :',
@@ -192,93 +186,96 @@ class LoginPage extends StatelessWidget {
   }
 
   void login(BuildContext context) async {
-  String phone = phoneController.text.trim();
-  String password = passwordController.text.trim();
+    String phone = phoneController.text.trim();
+    String password = passwordController.text.trim();
 
-  if (phone.isEmpty || password.isEmpty) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Error'),
-        content: const Text('หมายเลขโทรศัพท์และรหัสผ่านไม่สามารถว่างได้'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-    return;
-  }
-
-  log('Phone: $phone, Password: $password'); // เพิ่มการ log
-
-  try {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('register')
-        .where('phone', isEqualTo: phone)
-        .where('password', isEqualTo: password)
-        .get();
-
-    if (querySnapshot.docs.isNotEmpty) {
-      var userDoc = querySnapshot.docs.first.data() as Map<String, dynamic>;
-      String documentId = querySnapshot.docs.first.id;
-      String userType = userDoc['type'] ?? '';
-
-      // เพิ่มการตรวจสอบ userType
-      if (userType == 'user') {
-        log(' is a User');
-        UserProfile userProfile = UserProfile(
-          id: documentId,
-          name: userDoc['name'] ?? '',
-          phone: userDoc['phone'] ?? '',
-          address: userDoc['address'] ?? '',
-          image: userDoc['image'] ?? '',
-          latitude: double.tryParse(userDoc['latitude']?.toString() ?? '0.0') ?? 0.0,
-          longitude: double.tryParse(userDoc['longitude']?.toString() ?? '0.0') ?? 0.0,
-          type: userDoc['type'] ?? '',
-        );
-        // บันทึกข้อมูลผู้ใช้หากต้องการ
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => UserPage(), 
-          ),
-        );
-      } else if (userType == 'Rider') {
-        log('User is a Rider');
-        RiderProfile riderProfile = RiderProfile(
-          id: documentId,
-          name: userDoc['name'] ?? '',
-          phone: userDoc['phone'] ?? '',
-          image: userDoc['image'] ?? '',
-          vehicle: userDoc['vehicle'] ?? '',
-          type: userDoc['type'] ?? '',
-        );
-        // สามารถบันทึกข้อมูล riderProfile หรือใช้ Provider ที่นี่ได้
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomeRiderPage(),
-          ),
-        );
-      } else {
-        log('Unknown user type');
-      }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('ไม่พบผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!'),
+    if (phone.isEmpty || password.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Error'),
+          content: const Text('หมายเลขโทรศัพท์และรหัสผ่านไม่สามารถว่างได้'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
         ),
       );
+      return;
     }
-  } catch (error) {
-    log('Error: $error');
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('เกิดข้อผิดพลาด: $error')),
-    );
-  }
-}
 
+    log('Phone: $phone, Password: $password'); // เพิ่มการ log
+
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('register')
+          .where('phone', isEqualTo: phone)
+          .where('password', isEqualTo: password)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        var userDoc = querySnapshot.docs.first.data() as Map<String, dynamic>;
+        String documentId = querySnapshot.docs.first.id;
+        String userType = userDoc['type'] ?? '';
+
+        // เพิ่มการตรวจสอบ userType
+        if (userType == 'user') {
+          log(' is a User');
+          UserProfile userProfile = UserProfile(
+            id: documentId,
+            name: userDoc['name'] ?? '',
+            phone: userDoc['phone'] ?? '',
+            address: userDoc['address'] ?? '',
+            image: userDoc['image'] ?? '',
+            latitude:
+                double.tryParse(userDoc['latitude']?.toString() ?? '0.0') ??
+                    0.0,
+            longitude:
+                double.tryParse(userDoc['longitude']?.toString() ?? '0.0') ??
+                    0.0,
+            type: userDoc['type'] ?? '',
+          );
+          // บันทึกข้อมูลผู้ใช้หากต้องการ
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UserPage(),
+            ),
+          );
+        } else if (userType == 'Rider') {
+          log('User is a Rider');
+          RiderProfile riderProfile = RiderProfile(
+            id: documentId,
+            name: userDoc['name'] ?? '',
+            phone: userDoc['phone'] ?? '',
+            image: userDoc['image'] ?? '',
+            vehicle: userDoc['vehicle'] ?? '',
+            type: userDoc['type'] ?? '',
+          );
+          // สามารถบันทึกข้อมูล riderProfile หรือใช้ Provider ที่นี่ได้
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeRiderPage(),
+            ),
+          );
+        } else {
+          log('Unknown user type');
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('ไม่พบผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!'),
+          ),
+        );
+      }
+    } catch (error) {
+      log('Error: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('เกิดข้อผิดพลาด: $error')),
+      );
+    }
+  }
 }

@@ -14,16 +14,10 @@ import 'package:flutter_delivery/pages/sender.dart';
 import 'package:flutter_delivery/pages/user.dart';
 import 'package:flutter_delivery/pages/userMe.dart';
 import 'package:firebase_core/firebase_core.dart';
-<<<<<<< HEAD
-import 'package:flutter_delivery/pages/homerider.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'firebase_options.dart'; // นำเข้า Firebase options
-=======
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
-
->>>>>>> 45b8588 (kkk)
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
