@@ -1,10 +1,25 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_delivery/config/shared/dataUser.dart';
+import 'package:flutter_delivery/pages/homeRider.dart';
+import 'package:flutter_delivery/pages/model/Request/riderReq.dart';
+import 'package:flutter_delivery/pages/model/Request/userReq.dart';
 import 'package:flutter_delivery/pages/registerRider.dart';
 import 'package:flutter_delivery/pages/registeruser.dart';
 
 import 'package:flutter_delivery/pages/user.dart';
+import 'package:flutter_delivery/pages/userMe.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+
+
+
 
 class LoginPage extends StatelessWidget {
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,8 +31,12 @@ class LoginPage extends StatelessWidget {
             left: 0,
             right: 0,
             child: ClipRRect(
+<<<<<<< HEAD
               borderRadius: const BorderRadius.vertical(
                   bottom: Radius.circular(10)), // กำหนดขนาดของขอบโค้ง
+=======
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
+>>>>>>> 45b8588 (kkk)
               child: Image.asset(
                 'assets/images/logo.png',
                 height: 250,
@@ -32,7 +51,6 @@ class LoginPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // การ์ดสำหรับช่องกรอกข้อมูลและปุ่ม
                     Card(
                       color: Colors.white,
                       elevation: 5,
@@ -44,20 +62,24 @@ class LoginPage extends StatelessWidget {
                         padding: const EdgeInsets.all(30.0),
                         child: Column(
                           children: [
+<<<<<<< HEAD
                             // ป้ายกำกับสำหรับหมายเลขโทรศัพท์
                             const Align(
+=======
+                            Align(
+>>>>>>> 45b8588 (kkk)
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 'หมายเลขโทรศัพท์ :',
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 20,
-                                  fontWeight: FontWeight.bold, // ตัวหนา
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                            // ช่องกรอกหมายเลขโทรศัพท์
                             TextField(
+                              controller: phoneController,
                               decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -79,20 +101,24 @@ class LoginPage extends StatelessWidget {
                               keyboardType: TextInputType.phone,
                             ),
                             const SizedBox(height: 20),
+<<<<<<< HEAD
                             // ป้ายกำกับสำหรับรหัสผ่าน
                             const Align(
+=======
+                            Align(
+>>>>>>> 45b8588 (kkk)
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 'รหัสผ่าน :',
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 20,
-                                  fontWeight: FontWeight.bold, // ตัวหนา
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                            // ช่องกรอกรหัสผ่าน
                             TextField(
+                              controller: passwordController,
                               decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -114,15 +140,8 @@ class LoginPage extends StatelessWidget {
                               obscureText: true,
                             ),
                             const SizedBox(height: 20),
-                            // ปุ่มเข้าสู่ระบบ
                             ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => UserPage()),
-                                );
-                              },
+                              onPressed: () => login(context),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
                                     const Color.fromRGBO(255, 198, 207, 1),
@@ -148,7 +167,6 @@ class LoginPage extends StatelessWidget {
                     const SizedBox(height: 20),
                     const Text('หรือ'),
                     const SizedBox(height: 10),
-                    // ลิงก์สมัครสมาชิก rider และ user
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -184,4 +202,95 @@ class LoginPage extends StatelessWidget {
       ),
     );
   }
+
+  void login(BuildContext context) async {
+  String phone = phoneController.text.trim();
+  String password = passwordController.text.trim();
+
+  if (phone.isEmpty || password.isEmpty) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Error'),
+        content: const Text('หมายเลขโทรศัพท์และรหัสผ่านไม่สามารถว่างได้'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+    return;
+  }
+
+  log('Phone: $phone, Password: $password'); // เพิ่มการ log
+
+  try {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('register')
+        .where('phone', isEqualTo: phone)
+        .where('password', isEqualTo: password)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      var userDoc = querySnapshot.docs.first.data() as Map<String, dynamic>;
+      String documentId = querySnapshot.docs.first.id;
+      String userType = userDoc['type'] ?? '';
+
+      // เพิ่มการตรวจสอบ userType
+      if (userType == 'user') {
+        log(' is a User');
+        UserProfile userProfile = UserProfile(
+          id: documentId,
+          name: userDoc['name'] ?? '',
+          phone: userDoc['phone'] ?? '',
+          address: userDoc['address'] ?? '',
+          image: userDoc['image'] ?? '',
+          latitude: double.tryParse(userDoc['latitude']?.toString() ?? '0.0') ?? 0.0,
+          longitude: double.tryParse(userDoc['longitude']?.toString() ?? '0.0') ?? 0.0,
+          type: userDoc['type'] ?? '',
+        );
+        // บันทึกข้อมูลผู้ใช้หากต้องการ
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => UserPage(), 
+          ),
+        );
+      } else if (userType == 'Rider') {
+        log('User is a Rider');
+        RiderProfile riderProfile = RiderProfile(
+          id: documentId,
+          name: userDoc['name'] ?? '',
+          phone: userDoc['phone'] ?? '',
+          image: userDoc['image'] ?? '',
+          vehicle: userDoc['vehicle'] ?? '',
+          type: userDoc['type'] ?? '',
+        );
+        // สามารถบันทึกข้อมูล riderProfile หรือใช้ Provider ที่นี่ได้
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomeRiderPage(),
+          ),
+        );
+      } else {
+        log('Unknown user type');
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('ไม่พบผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!'),
+        ),
+      );
+    }
+  } catch (error) {
+    log('Error: $error');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('เกิดข้อผิดพลาด: $error')),
+    );
+  }
+}
+
 }
