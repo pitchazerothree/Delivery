@@ -33,7 +33,6 @@ dependencies:
   image_picker: ^1.1.2  # ตรวจสอบเวอร์ชันล่าสุดใน pub.dev
   firebase_storage: ^12.3.4 # ถ้าคุณต้องการอัปโหลดรูปไป Firebase Storage
   google_maps_flutter: ^2.0.10  # Check for the latest version
- 
   geolocator: ^9.0.0  # อัปเดตเป็นเวอร์ชันล่าสุด
   uuid: ^4.1.0       # เปลี่ยนไปใช้เวอร์ชันนี้
   get_storage: ^2.0.3
@@ -43,22 +42,14 @@ dependencies:
   cupertino_icons: ^1.0.6
   http: ^1.2.2
   firebase_core: ^3.6.0
- 
-
-
   cloud_firestore: ^5.4.2
   android_path_provider: ^0.3.0
   get: ^4.6.6
   provider: ^6.1.2
   path_provider: ^2.1.4
-
-
-
   geolocator_android: 4.5.5
   flutter_map: ^7.0.2
   latlong2: ^0.9.1
- 
-
   geocoding: ^3.0.0
 
 dev_dependencies:

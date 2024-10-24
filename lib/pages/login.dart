@@ -8,7 +8,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(254, 172, 195, 1),
+      backgroundColor: const Color.fromRGBO(254, 172, 195, 1),
       body: Stack(
         children: [
           Positioned(
@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget {
             left: 0,
             right: 0,
             child: ClipRRect(
-              borderRadius: BorderRadius.vertical(
+              borderRadius: const BorderRadius.vertical(
                   bottom: Radius.circular(10)), // กำหนดขนาดของขอบโค้ง
               child: Image.asset(
                 'assets/images/logo.png',
@@ -45,9 +45,9 @@ class LoginPage extends StatelessWidget {
                         child: Column(
                           children: [
                             // ป้ายกำกับสำหรับหมายเลขโทรศัพท์
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
-                              child: const Text(
+                              child: Text(
                                 'หมายเลขโทรศัพท์ :',
                                 style: TextStyle(
                                   color: Colors.black,
@@ -80,9 +80,9 @@ class LoginPage extends StatelessWidget {
                             ),
                             const SizedBox(height: 20),
                             // ป้ายกำกับสำหรับรหัสผ่าน
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
-                              child: const Text(
+                              child: Text(
                                 'รหัสผ่าน :',
                                 style: TextStyle(
                                   color: Colors.black,
@@ -168,7 +168,7 @@ class LoginPage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => RegisterUser()),
+                                  builder: (context) => const RegisterUser()),
                             );
                           },
                           child: const Text('สมัครสมาชิก (User)'),

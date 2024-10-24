@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore package
 import 'package:flutter_delivery/pages/SendProduct.dart';
 import 'package:flutter_delivery/pages/PackThings.dart'; // Import the PackThings page
 
@@ -9,6 +10,14 @@ class SenderPage extends StatefulWidget {
 
 class _SenderPageState extends State<SenderPage> {
   int _selectedIndex = 0; // To track the currently selected index
+  final TextEditingController phoneNoCtl =
+      TextEditingController(); // ใช้ phoneNoCtl สำหรับค้นหา
+
+  // Create TextEditingControllers for name and address
+  TextEditingController nameNoCtl = TextEditingController();
+  TextEditingController addressNoCtl = TextEditingController();
+
+  List<Map<String, String>> searchResults = []; // Store search results
 
   void _onItemTapped(int index) {
     setState(() {
@@ -30,10 +39,41 @@ class _SenderPageState extends State<SenderPage> {
     }
   }
 
+  Future<void> _searchUser() async {
+    // Clear previous search results
+    searchResults.clear();
+
+    // Get the input from the phoneNoCtl TextField
+    String phoneNumber = phoneNoCtl.text;
+
+    // Query the Firestore database
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('register')
+        .where('phone',
+            isEqualTo: phoneNumber) // Adjust this field name as necessary
+        .get();
+
+    // Process the results
+    for (var doc in snapshot.docs) {
+      // Add each user to the search results
+      searchResults.add({
+        'name': doc[
+            'name'], // Adjust field names according to your Firestore structure
+        'phone': doc['phone'],
+        'address': doc['address'],
+      });
+    }
+
+    // Refresh the UI
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text('ค้นหาผู้รับ'), // App bar title
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -53,12 +93,12 @@ class _SenderPageState extends State<SenderPage> {
               ),
               SizedBox(height: 10),
               TextField(
+                controller: phoneNoCtl, // Set the controller here
                 decoration: InputDecoration(
-                  hintText: '0',
                   filled: true,
                   fillColor: Color(0xFFFFC0CB),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(0.0),
+                    borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
                   ),
                 ),
@@ -66,9 +106,7 @@ class _SenderPageState extends State<SenderPage> {
               ),
               SizedBox(height: 10),
               ElevatedButton(
-                onPressed: () {
-                  // Implement search logic
-                },
+                onPressed: _searchUser, // Call search function
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFFFFC0CB),
                   shape: RoundedRectangleBorder(
@@ -91,17 +129,19 @@ class _SenderPageState extends State<SenderPage> {
                 ),
               ),
               SizedBox(height: 10),
-              // Example list of recipients
-              Column(
-                children: [
-                  buildRecipientCard('บริสา ดูดี', '0245879532',
-                      '18/54 ต.นาบี อ.ดงพนม จ.อุตร 23519'),
-                  buildRecipientCard('ไจด์ ดีดี', '0222279532',
-                      '124/54 ต.นาบี อ.ดงพนม จ.อุตร 23519'),
-                  buildRecipientCard('กรกฎ คน', '0245875755',
-                      '18/54 ต.นาบี อ.ดงพนม จ.อุตร 23519'),
-                ],
-              ),
+              // Display search results
+              if (searchResults.isEmpty)
+                Text('ไม่พบผู้รับที่ค้นหา') // Message when no results found
+              else
+                Column(
+                  children: searchResults
+                      .map((recipient) => buildRecipientCard(
+                            recipient['name']!,
+                            recipient['phone']!,
+                            recipient['address']!,
+                          ))
+                      .toList(),
+                ),
             ],
           ),
         ),
@@ -121,6 +161,11 @@ class _SenderPageState extends State<SenderPage> {
   }
 
   Widget buildRecipientCard(String name, String phone, String address) {
+    // Set the text fields with the found recipient's information
+    nameNoCtl.text = name;
+    phoneNoCtl.text = phone; // Optional: You can display this as well
+    addressNoCtl.text = address;
+
     return Card(
       color: Color(0xFFFFC0CB),
       margin: const EdgeInsets.symmetric(vertical: 10.0),
@@ -129,23 +174,30 @@ class _SenderPageState extends State<SenderPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  phone,
-                  style: TextStyle(fontSize: 16),
-                ),
-                Text(
-                  address,
-                  style: TextStyle(fontSize: 14),
-                ),
-              ],
+            Expanded(
+              // Allow text to take available space
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis, // Prevent overflow
+                  ),
+                  Text(
+                    phone,
+                    style: TextStyle(fontSize: 16),
+                    overflow: TextOverflow.ellipsis, // Prevent overflow
+                  ),
+                  Text(
+                    address,
+                    style: TextStyle(fontSize: 14),
+                    overflow: TextOverflow.ellipsis, // Prevent overflow
+                  ),
+                ],
+              ),
             ),
+            SizedBox(width: 10), // Add spacing between text and button
             ElevatedButton(
               onPressed: () {
                 // Navigate to the PackThings page when selected
